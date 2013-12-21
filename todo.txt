@@ -1,7 +1,7 @@
 Now
 * Error messages
 * Cleanup
-* Display a nice filename for file choose dialogs
+* Credits
 
 Next
 * Drop Zone
@@ -9,3 +9,4 @@ Next
 
 Done
 * URL handling  for file open
+* Display a nice filename for file choose dialogs
