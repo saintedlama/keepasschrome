@@ -24,11 +24,15 @@ function PasswordStoreController($scope) {
             return;
         }
 
-        $scope.path.file(function(file) {
-            var reader = new FileReader();
 
-            reader.onloadend = function() {
-                var data = new jDataView(this.result, 0, this.result.length, true);
+        if (typeof($scope.path) == 'string') { // URL
+
+            var oReq = new XMLHttpRequest();
+            oReq.open('GET', $scope.path, true);
+            oReq.responseType = 'arraybuffer';
+
+            oReq.onloadend = function() {
+                var data = new jDataView(oReq.response, 0, oReq.response.length, true);
 
                 var passes = [];
                 passes.push(readPassword($scope.password));
@@ -42,12 +46,39 @@ function PasswordStoreController($scope) {
 
                 $scope.$apply();
             };
+            oReq.onerror = function(e) {
+                // TODO: Error
+                console.log(e);
+            };
 
-            reader.readAsArrayBuffer(file);
-        }, function() {
-            // TODO: Error message
-            console.log(arguments);
-        });
+            oReq.send();
+        }
+        else {
+            $scope.path.file(function(file) {
+                var reader = new FileReader();
+
+                reader.onloadend = function() {
+                    var data = new jDataView(this.result, 0, this.result.length, true);
+
+                    var passes = [];
+                    passes.push(readPassword($scope.password));
+
+                    var entries = readKeePassFile(data, passes);
+
+                    $scope.entries = entries;
+                    $scope.path = '';
+                    $scope.password ='';
+                    $scope.showOpenDialog = false;
+
+                    $scope.$apply();
+                };
+
+                reader.readAsArrayBuffer(file);
+            }, function() {
+                // TODO: Error message
+                console.log(arguments);
+            });
+        }
     };
 
     $scope.toggleShowPassword = function(entry) {

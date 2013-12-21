@@ -32,7 +32,7 @@
                 <label for="path">Path to Keepass File</label>
                 <div class="input-group form-group">
 
-                    <input id="path" name="path" type="text" class="form-control">
+                    <input id="path" name="path" type="text" class="form-control" ng-model="path">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="button" ng-click="chooseFile()">
                             <span class="fa fa-file-o"></span>
@@ -51,7 +51,7 @@
                 </button>
             </form>
 
-            <div>
+            <div class="col-lg-12">
                 <form class="form-inline" ng-hide="showOpenDialog">
                     <div class="form-group">
                         <label class="sr-only" for="filter">Search KeePass</label>

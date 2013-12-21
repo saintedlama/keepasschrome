@@ -1,2 +1,11 @@
+Now
 * Error messages
+* Cleanup
+* Display a nice filename for file choose dialogs
+
+Next
+* Drop Zone
+* Progress bars...
+
+Done
 * URL handling  for file open
