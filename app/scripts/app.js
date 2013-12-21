@@ -12,6 +12,7 @@ function PasswordStoreController($scope) {
             }
 
             $scope.path = fileEntry;
+            $scope.url = fileEntry.name;
             $scope.$apply();
         });
     }
@@ -19,20 +20,19 @@ function PasswordStoreController($scope) {
     $scope.openPasswordStore = function() {
         console.log('opening', $scope.password, $scope.path);
 
-        if (!$scope.path) {
-            // TODO: Error message
+        if (!$scope.url && !$scope.path) {
+            // TODO: Error message - make form non valid!
             return;
         }
 
-
-        if (typeof($scope.path) == 'string') { // URL
-
+        // TODO: Invert logic
+        if (!$scope.path) { // URL
             var oReq = new XMLHttpRequest();
             oReq.open('GET', $scope.path, true);
             oReq.responseType = 'arraybuffer';
 
             oReq.onloadend = function() {
-                var data = new jDataView(oReq.response, 0, oReq.response.length, true);
+                var data = new jDataView(oReq.result, 0, oReq.result.length, true);
 
                 var passes = [];
                 passes.push(readPassword($scope.password));
