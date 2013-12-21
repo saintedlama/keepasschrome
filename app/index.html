@@ -29,10 +29,10 @@
     <body ng-app="keepasschrome" ng-csp>
         <div class="container" ng-controller="PasswordStoreController">
             <form ng-show="showOpenDialog">
-                <label for="path">Path to Keepass File</label>
+                <label for="url">Path to Keepass File</label>
                 <div class="input-group form-group">
 
-                    <input id="path" name="path" type="text" class="form-control" ng-model="path">
+                    <input id="url" name="url" type="text" class="form-control" ng-model="url">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="button" ng-click="chooseFile()">
                             <span class="fa fa-file-o"></span>
@@ -53,9 +53,14 @@
 
             <div class="col-lg-12">
                 <form class="form-inline" ng-hide="showOpenDialog">
-                    <div class="form-group">
-                        <label class="sr-only" for="filter">Search KeePass</label>
+                    <div class="input-group form-group">
+
                         <input id="filter" type="text" class="form-control" placeholder="Search KeePass" ng-model="filterTerm">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="filterTerm=''">
+                                <span class="fa fa-eraser" />
+                            </button>
+                        </span>
                     </div>
                 </form>
             </div>
