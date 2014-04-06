@@ -1,13 +1,3 @@
-For Release
-* Cleanup
-    * Self invoking function for KDBX
-* Credits
-
 Next Version
 * Drop Zone
 * Progress bars...
-
-Done
-* Error messages
-* URL handling  for file open
-* Display a nice filename for file choose dialogs
