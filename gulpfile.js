@@ -27,7 +27,14 @@ gulp.task('copy', function() {
         .pipe(gulp.dest('dist'));
 });
 
+gulp.task('zip', function() {
+    return gulp.src('dist/**')
+        .pipe(p.zip('dist.zip'))
+        .pipe(gulp.dest('.'));
+});
+
 gulp.task('build', ['copy', 'vendor'], function() {
+    gulp.start('zip');
 });
 
 // Default task
