@@ -1,8 +1,8 @@
 {
-    "name": "__MSG_appName__",
-    "version": "1",
+    "name": "KeePass Chrome",
+    "version": "0.1",
     "manifest_version": 2,
-    "description": "__MSG_appDescription__",
+    "description": "Access your KeePass passwords offline",
     "icons": {
         "16": "images/icon-16.png",
         "128": "images/icon-128.png"
