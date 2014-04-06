@@ -27,80 +27,134 @@
         <script type="application/javascript" src="scripts/app.js"></script>
     </head>
     <body ng-app="keepasschrome" ng-csp>
-        <div class="container" ng-controller="PasswordStoreController">
-            <form ng-show="showOpenDialog">
-                <label for="url">Path to Keepass File</label>
-                <div class="input-group form-group">
-
-                    <input id="url" name="url" type="text" class="form-control" ng-model="url">
+        <div class="container" ng-controller="PasswordStoreCtrl">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form name="openkeepass" ng-show="showOpenDialog">
+                        <label for="url">Path/URL of Keepass File</label>
+                        <div class="input-group form-group">
+                            <input id="url" name="url" type="text" class="form-control" required ng-model="url">
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="button" ng-click="chooseFile()">
                             <span class="fa fa-file-o"></span>
                         </button>
                     </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input id="password" type="password" class="form-control" required ng-model="password" required />
+                        </div>
+
+                        <button class="btn btn-primary btn-lg btn-block" ng-disabled="openkeepass.$invalid" ng-click="openPasswordStore()">
+                            <span class="fa fa-unlock"></span>
+                            Open
+                        </button>
+                    </form>
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input id="password" type="password" class="form-control" ng-model="password" required />
+                <div class="col-lg-12">
+                    <div style="margin-top: 15px;" class="alert alert-danger" ng-show="openErrorMessage">
+                        {{openErrorMessage}}
+                    </div>
                 </div>
+            </div>
 
-                <button class="btn btn-primary btn-lg btn-block" ng-click="openPasswordStore()">
-                    <span class="fa fa-unlock"></span>
-                    Open
-                </button>
-            </form>
 
-            <div class="col-lg-12">
-                <form class="form-inline" ng-hide="showOpenDialog">
-                    <div class="input-group form-group">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form class="form-inline" ng-hide="showOpenDialog">
+                        <div class="input-group form-group">
 
-                        <input id="filter" type="text" class="form-control" placeholder="Search KeePass" ng-model="filterTerm">
+                            <input id="filter" type="text" class="form-control" placeholder="Search KeePass" ng-model="filterTerm">
                         <span class="input-group-btn">
                             <button class="btn btn-default" type="button" ng-click="filterTerm=''">
                                 <span class="fa fa-eraser" />
                             </button>
                         </span>
-                    </div>
-                </form>
-            </div>
-
-            <div class="col-lg-4" ng-repeat="entry in entries | filter:filterTerm">
-                <div class="panel panel-default" >
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{entry.Title}}</h3>
-                    </div>
-                    <table class="table">
-                        <tr>
-                            <td>User name</td>
-                            <td>{{entry.UserName}}</td>
-                        </tr>
-                        <tr>
-                            <td>Password</td>
-                            <td>
-                                <input ng-hide="entry.showPassword" type="password" value="{{entry.Password}}" />
-                                <input ng-show="entry.showPassword" type="text" value="{{entry.Password}}" />
-
-                                <button ng-hide="entry.showPassword" type="button" ng-click="toggleShowPassword(entry)">
-                                    <span class="fa fa-unlock"></span>
-                                </button>
-
-                                <button ng-show="entry.showPassword" type="button" ng-click="toggleShowPassword(entry)">
-                                    <span class="fa fa-lock"></span>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr ng-show="entry.URL">
-                            <td>URL</td>
-                            <td><a href="{{entry.URL}}" target="_blank">{{entry.URL}}</a></td>
-                        </tr>
-                        <tr ng-show="entry.Notes">
-                            <td>Notes</td>
-                            <td>{{entry.Notes}}</td>
-                        </tr>
-                    </table>
+                        </div>
+                    </form>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-4" ng-repeat="entry in entries | filter:filterTerm">
+                    <div class="panel panel-default" >
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{entry.Title}}</h3>
+                        </div>
+                        <table class="table">
+                            <tr>
+                                <td>User name</td>
+                                <td>{{entry.UserName}}</td>
+                            </tr>
+                            <tr>
+                                <td>Password</td>
+                                <td>
+                                    <input ng-hide="entry.showPassword" type="password" value="{{entry.Password}}" />
+                                    <input ng-show="entry.showPassword" type="text" value="{{entry.Password}}" />
+
+                                    <button class="btn btn-danger" ng-hide="entry.showPassword" type="button" ng-click="toggleShowPassword(entry)">
+                                        <span class="fa fa-unlock"></span>
+                                    </button>
+
+                                    <button class="btn btn-success" ng-show="entry.showPassword" type="button" ng-click="toggleShowPassword(entry)">
+                                        <span class="fa fa-lock"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr ng-show="entry.URL">
+                                <td>URL</td>
+                                <td><a href="{{entry.URL}}" target="_blank">{{entry.URL}}</a></td>
+                            </tr>
+                            <tr ng-show="entry.Notes">
+                                <td>Notes</td>
+                                <td>{{entry.Notes}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div style="margin-top: 30px;" class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Credits
+                                <a href="#" class="pull-right" ng-hide="showCredits" ng-click="showCredits=!showCredits">
+                                    <span class="fa fa-toggle-down"></span>
+                                </a>
+                                <a href="#" class="pull-right" ng-show="showCredits" ng-click="showCredits=!showCredits">
+                                    <span class="fa fa-toggle-up"></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-body" ng-show="showCredits">
+                            <p>
+                                KeePassChrome was inspired and forked from BrowsePass with a reworked UI and the ability
+                                to copy passwords to clipboard. <br>
+                                Big thanks go to Nam Nguyen the author of chrome for implementing the KeePass decryption
+                                algorithm.
+                            </p>
+
+                            <p>KeePassChrome uses these wonderful Open Source libraries to get it's job done</p>
+                            <dl>
+                                <dt>kdbx.js</dt>
+                                <dd>Copyright 2013 Nam T. Nguyen, Distributed under the GPL license version 2 or later.</dd>
+                                <dt>salsa20.js</dt>
+                                <dd>copied from https://gist.github.com/dchest/4582374</dd>
+                                <dt>jdataview.js</dt>
+                                <dd>http://github.com/jDataView/jDataView, http://jDataView.github.io/</dd>
+                                <dt>inflate.js</dt>
+                                <dd>Copyright (C) 1999,2012 Masanao Izumo, http://www.onicos.com/staff/iz/amuse/javascript/expert/inflate.txt</dd>
+                                <dt>Crypto.js</dt>
+                                <dd>Copyright 2009-2013 by Jeff Mott. code.google.com/p/crypto-js</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </body>
 </html>
