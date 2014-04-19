@@ -6,7 +6,10 @@
     "gulp": "~3.6.0",
     "gulp-load-tasks": "~0.1.1",
     "gulp-clean": "~0.2.4",
-    "gulp-zip": "~0.3.3"
+    "gulp-zip": "~0.3.3",
+    "tiny-lr": "0.0.5",
+    "gulp-less": "~1.2.3",
+    "gulp-concat": "~2.2.0"
   },
   "engines": {
     "node": ">=0.8.0"
