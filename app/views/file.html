@@ -1,8 +1,12 @@
+<div ng-include="'views/navbar.html'"></div>
+
 <div class="row">
     <div class="col-lg-12">
         <form name="openkeepass">
             <div class="input-group form-group">
-                <input id="url" name="url" type="text" class="form-control" required ng-model="filename">
+                <label for="filename">File</label>
+
+                <input id="filename" name="filename" type="text" class="form-control" required ng-model="filename">
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="button" ng-click="chooseFile()">
                         <span class="fa fa-file-o"></span>

@@ -8,12 +8,32 @@ controllers.controller('InfoCtrl', ['$scope',
   function ($scope) {
   }]);
 
-controllers.controller('OpenUrlCtrl', ['$scope',
-  function ($scope) {
+controllers.controller('OpenUrlCtrl', ['$scope', 'passwordStore',
+  function ($scope, passwordStore) {
+    $scope.openPasswordStore = function() {
+      var oReq = new XMLHttpRequest();
+      oReq.open('GET', $scope.url, true);
+      oReq.responseType = 'arraybuffer';
+
+      oReq.onloadend = function() {
+        if (oReq.status != 200) {
+          return showError('Could not load KeePass file from ' + $scope.url);
+        }
+
+        passwordStore.decrypt(this.response, $scope.password);
+        window.location.hash = '/passwordstore';
+      };
+
+      oReq.onerror = function() {
+        return showError('Could not load KeePass file from ' + $scope.url);
+      };
+
+      oReq.send();
+    };
   }]);
 
-controllers.controller('OpenFileCtrl', ['$scope', '$location', 'passwordStore',
-  function ($scope, $location, passwordStore) {
+controllers.controller('OpenFileCtrl', ['$scope', 'passwordStore',
+  function ($scope, passwordStore) {
     $scope.chooseFile = function() {
       chrome.fileSystem.chooseEntry({ type : 'openFile'}, function(fileEntry) {
         if (!fileEntry) {
@@ -31,10 +51,7 @@ controllers.controller('OpenFileCtrl', ['$scope', '$location', 'passwordStore',
         var reader = new FileReader();
 
         reader.onloadend = function() {
-          var entries = passwordStore.decrypt(this.result, $scope.password);
-
-          //$location.path('/passwordstore');
-          //$location.path('/passwords');
+          passwordStore.decrypt(this.result, $scope.password);
           window.location.hash = '/passwordstore';
         };
 

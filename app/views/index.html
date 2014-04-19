@@ -1,51 +1,28 @@
-<div class="row">
-    <div class="col-xs-4 text-center">
-        <a href="#" ng-click="view = 'file'" title="Open File">
-            <i class="fa fa-file-o fa-5x"></i>
-            <p>Open File</p>
-        </a>
-    </div>
-    <div class="col-xs-4 text-center">
-        <a href="showView('url')" title="Open URL">
-            <i class="fa fa-globe fa-5x"></i>
-            <p>Open Url</p>
-        </a>
-    </div>
-    <div class="col-xs-4 text-center">
-        <a href="#/info" title="About">
-            <i class="fa fa-info fa-5x"></i>
-            <p>Info</p>
-        </a>
-    </div>
-</div>
-
-<div class="row" ng-show="view == 'file'">
-    <div class="col-lg-12">
-        <form name="openkeepass">
-            <div class="input-group form-group">
-                <input id="url" name="url" type="text" class="form-control" required ng-model="filename">
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" type="button" ng-click="chooseFile()">
-                        <span class="fa fa-file-o"></span>
-                    </button>
-                </span>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input id="password" type="password" class="form-control" required ng-model="password" required />
-            </div>
-
-            <button class="btn btn-primary btn-lg btn-block" ng-disabled="openkeepass.$invalid" ng-click="openPasswordStore()">
-                <span class="fa fa-unlock"></span>
-                Open
-            </button>
-        </form>
+<div class="intro">
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <h1 style="font-size: 64px">KeePass Chrome</h1>
+        </div>
     </div>
 
-    <div class="col-lg-12">
-        <div style="margin-top: 15px;" class="alert alert-danger" ng-show="openErrorMessage">
-            {{openErrorMessage}}
+    <div class="row" style="padding-top: 100px">
+        <div class="col-xs-4 text-center">
+            <a href="#/open/file" ng-click="view = 'file'" title="Open File">
+                <i class="fa fa-file-o fa-5x"></i>
+                <p>Open File</p>
+            </a>
+        </div>
+        <div class="col-xs-4 text-center">
+            <a href="#/open/url" title="Open URL">
+                <i class="fa fa-globe fa-5x"></i>
+                <p>Open Url</p>
+            </a>
+        </div>
+        <div class="col-xs-4 text-center">
+            <a href="#/info" title="About">
+                <i class="fa fa-info fa-5x"></i>
+                <p>Info</p>
+            </a>
         </div>
     </div>
 </div>

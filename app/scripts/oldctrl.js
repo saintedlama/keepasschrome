@@ -42,7 +42,7 @@ function PasswordStoreCtrl($scope) {
           return showError('Could not load KeePass file from ' + $scope.url);
         }
 
-        showEntries(oReq.result);
+        showEntries(this.response);
       };
       oReq.onerror = function() {
         return showError('Could not load KeePass file from ' + $scope.url);
