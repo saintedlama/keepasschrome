@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form class="form-inline" ng-hide="showOpenDialog">
+            <div class="input-group form-group">
+                <input id="filter" type="text" class="form-control" placeholder="Search KeePass" ng-model="filterTerm">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="filterTerm=''">
+                        <span class="fa fa-eraser" />
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4" ng-repeat="entry in entries | filter:filterTerm">
+        <div class="panel panel-default" >
+            <div class="panel-heading">
+                <h3 class="panel-title">{{entry.Title}}</h3>
+            </div>
+            <table class="table">
+                <tr>
+                    <td>User name</td>
+                    <td>{{entry.UserName}}</td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td>
+                        <input ng-hide="entry.showPassword" type="password" value="{{entry.Password}}" />
+                        <input ng-show="entry.showPassword" type="text" value="{{entry.Password}}" />
+
+                        <button class="btn btn-danger" ng-hide="entry.showPassword" type="button" ng-click="toggleShowPassword(entry)">
+                            <span class="fa fa-unlock"></span>
+                        </button>
+
+                        <button class="btn btn-success" ng-show="entry.showPassword" type="button" ng-click="toggleShowPassword(entry)">
+                            <span class="fa fa-lock"></span>
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-show="entry.URL">
+                    <td>URL</td>
+                    <td><a href="{{entry.URL}}" target="_blank">{{entry.URL}}</a></td>
+                </tr>
+                <tr ng-show="entry.Notes">
+                    <td>Notes</td>
+                    <td>{{entry.Notes}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

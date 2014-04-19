@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form name="openkeepass" ng-show="showOpenDialog">
+            <label for="url">Path/URL of Keepass File</label>
+            <div class="input-group form-group">
+                <input id="url" name="url" type="text" class="form-control" required ng-model="url">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" ng-click="chooseFile()">
+                            <span class="fa fa-file-o"></span>
+                        </button>
+                    </span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" type="password" class="form-control" required ng-model="password" required />
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-block" ng-disabled="openkeepass.$invalid" ng-click="openPasswordStore()">
+                <span class="fa fa-unlock"></span>
+                Open
+            </button>
+        </form>
+    </div>
+
+    <div class="col-lg-12">
+        <div style="margin-top: 15px;" class="alert alert-danger" ng-show="openErrorMessage">
+            {{openErrorMessage}}
+        </div>
+    </div>
+</div>

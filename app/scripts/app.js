@@ -1,86 +1,55 @@
-var app = angular.module('keepasschrome', []);
+var app = angular.module('keepasschrome', [
+  'ngRoute',
+  'controllers'
+]);
 
-// TODO: using fileSystem permission is a litle bit too much rights  - we only need to read!
+app.config(['$routeProvider',
+  function($routeProvider) {
+    $routeProvider.
+      when('/', {
+        templateUrl: 'views/index.html',
+        controller: 'IndexCtrl'
+      }).
+      when('/open/url', {
+        templateUrl: 'views/url.html',
+        controller: 'OpenUrlCtrl'
+      }).
+      when('/open/file', {
+        templateUrl: 'views/file.html',
+        controller: 'OpenFileCtrl'
+      }).
+      when('/info', {
+        templateUrl: 'views/info.html',
+        controller: 'InfoCtrl'
+      }).
+      when('/passwordstore', {
+        templateUrl: 'views/list.html',
+        controller: 'ListCtrl'
+      }).
+      otherwise({
+        redirectTo: '/'
+      });
+  }]);
 
-function PasswordStoreCtrl($scope) {
-    $scope.showOpenDialog = true;
+app.factory('passwordStore', function() {
+  console.log('factory passwordStore called');
 
-    $scope.chooseFile = function() {
-        chrome.fileSystem.chooseEntry({ type : 'openFile'}, function(fileEntry) {
-            if (!fileEntry) {
-                return;
-            }
+  var entries = [];
 
-            $scope.path = fileEntry;
-            $scope.url = fileEntry.name;
-            $scope.$apply();
-        });
-    }
-
-    $scope.openPasswordStore = function() {
-        if (!$scope.url && !$scope.path) {
-            return showError('Please specify a url or choose a local file');
-        }
-
-        if ($scope.path) {
-            $scope.path.file(function(file) {
-                var reader = new FileReader();
-
-                reader.onloadend = function() {
-                    showEntries(this.result);
-                };
-
-                reader.readAsArrayBuffer(file);
-            }, function() {
-                return showError('Could not load KeePass file from ' + $scope.url);
-            });
-        }
-        else {
-            var oReq = new XMLHttpRequest();
-            oReq.open('GET', $scope.url, true);
-            oReq.responseType = 'arraybuffer';
-
-            oReq.onloadend = function() {
-                if (oReq.status != 200) {
-                    return showError('Could not load KeePass file from ' + $scope.url);
-                }
-
-                showEntries(oReq.result);
-            };
-            oReq.onerror = function() {
-                return showError('Could not load KeePass file from ' + $scope.url);
-            };
-
-            oReq.send();
-        }
-    };
-
-    $scope.toggleShowPassword = function(entry) {
-        entry.showPassword = !entry.showPassword;
-    };
-
-    function showEntries(inputBinary) {
+  return {
+    // TODO: wrap jDataView, readPassword, readKeePassFile in angular services
+    decrypt : function(inputBinary, password) {
         var data = new jDataView(inputBinary, 0, inputBinary.length, true);
 
         var passes = [];
-        passes.push(readPassword($scope.password));
+        passes.push(readPassword(password));
 
-        try {
-            var entries = readKeePassFile(data, passes);
-            $scope.entries = entries;
-            delete $scope.path;
-            delete $scope.password;
+        entries = readKeePassFile(data, passes);
 
-            $scope.showOpenDialog = false;
-            $scope.openErrorMessage = '';
-
-            $scope.$apply();
-        } catch (e) {
-            return showError('KeePass file loaded from ' + $scope.url + ' does not seem valid! We support only KeePass 2.x file format. Sorry :(');
-        }
+        return entries;
+      },
+    getEntries : function() {
+      return entries;
     }
-    function showError(message) {
-        $scope.openErrorMessage = message;
-        $scope.$apply();
-    }
-}
+  };
+});
