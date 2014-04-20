@@ -18,26 +18,33 @@ gulp.task('less', function() {
 
 gulp.task('vendor', function() {
     return gulp.src([
-            'app/bower_components/font-awesome/css/font-awesome.min.css',
-            'app/bower_components/font-awesome/fonts/**',
-            'app/bower_components/jquery/dist/jquery.min.js',
-            'app/bower_components/angular/angular.min.js'
-        ], { base : 'app' })
-        .pipe(gulp.dest('dist'));
+      'app/bower_components/angular/angular.min.js',
+      'app/bower_components/angular-route/angular-route.min.js',
+      'app/bower_components/bootstrap/dist/js/bootstrap.min.js',
+
+      'app/bower_components/font-awesome/css/font-awesome.min.css',
+      'app/bower_components/font-awesome/fonts/**',
+
+      'app/bower_components/jquery/dist/jquery.min.js',
+
+      'app/bower_components/open-sans/css/open-sans.min.css',
+      'app/bower_components/open-sans/fonts/**',
+    ], { base : 'app' })
+      .pipe(gulp.dest('dist'));
 });
 
-gulp.task('copy', function() {
-    return gulp.src([
-            '!app/bower_components{,/**}',
-            'app/**'
-        ])
-        .pipe(gulp.dest('dist'));
+gulp.task('copy', ['less'], function () {
+  return gulp.src([
+    '!app/bower_components{,/**}',
+    'app/**'
+  ])
+    .pipe(gulp.dest('dist'));
 });
 
-gulp.task('zip', function() {
-    return gulp.src('dist/**')
-        .pipe(p.zip('dist.zip'))
-        .pipe(gulp.dest('.'));
+gulp.task('zip', function () {
+  return gulp.src('dist/**')
+    .pipe(p.zip('dist.zip'))
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('build', ['copy', 'vendor'], function() {
