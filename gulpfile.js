@@ -16,23 +16,8 @@ gulp.task('less', function() {
     .pipe(gulp.dest('app/styles'));
 });
 
-gulp.task('dev', function () {
-  var lr = tinylr();
-  lr.listen(35729);
-  gulp.watch(['app/**/*.html', 'app/**/*.js', 'app/**/*.css'], function (evt) {
-    lr.changed({
-      body: {
-        files: [evt.path]
-      }
-    });
-  });
-
-  gulp.watch(['app/less/*.less'], ['less']);
-});
-
 gulp.task('vendor', function() {
     return gulp.src([
-            'app/bower_components/bootstrap/dist/css/bootstrap.min.css',
             'app/bower_components/font-awesome/css/font-awesome.min.css',
             'app/bower_components/font-awesome/fonts/**',
             'app/bower_components/jquery/dist/jquery.min.js',
@@ -57,6 +42,20 @@ gulp.task('zip', function() {
 
 gulp.task('build', ['copy', 'vendor'], function() {
     gulp.start('zip');
+});
+
+gulp.task('dev', function () {
+  var lr = tinylr();
+  lr.listen(35729);
+  gulp.watch(['app/**/*.html', 'app/**/*.js', 'app/**/*.css'], function (evt) {
+    lr.changed({
+      body: {
+        files: [evt.path]
+      }
+    });
+  });
+
+  gulp.watch(['app/less/*.less'], ['less']);
 });
 
 // Default task
