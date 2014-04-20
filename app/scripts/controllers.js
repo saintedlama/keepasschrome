@@ -11,30 +11,42 @@ controllers.controller('InfoCtrl', ['$scope',
 controllers.controller('OpenUrlCtrl', ['$scope', 'passwordStore',
   function ($scope, passwordStore) {
     $scope.openPasswordStore = function() {
+      // TODO: Move to angular services
       var oReq = new XMLHttpRequest();
       oReq.open('GET', $scope.url, true);
       oReq.responseType = 'arraybuffer';
 
       oReq.onloadend = function() {
-        if (oReq.status != 200) {
-          return showError('Could not load KeePass file from ' + $scope.url);
+        if (oReq.status !== 200) {
+          return $scope.showError('Could not load KeePass file from ' + $scope.url);
         }
 
-        passwordStore.decrypt(this.response, $scope.password);
+        try {
+          passwordStore.decrypt(this.response, $scope.password);
+        } catch(e) {
+          return $scope.showError('Password does not match for file from ' + $scope.url + ' or file from ' + $scope.url + ' is no valid KeePass file');
+        }
+
         window.location.hash = '/passwordstore';
       };
 
       oReq.onerror = function() {
-        return showError('Could not load KeePass file from ' + $scope.url);
+        return $scope.showError('Could not load KeePass file from ' + $scope.url);
       };
 
       oReq.send();
+    };
+
+    $scope.showError = function(errorMessage) {
+      $scope.errorMessage = errorMessage;
+      $scope.$apply();
     };
   }]);
 
 controllers.controller('OpenFileCtrl', ['$scope', 'passwordStore',
   function ($scope, passwordStore) {
     $scope.chooseFile = function() {
+      // TODO: Move to angular services
       chrome.fileSystem.chooseEntry({ type : 'openFile'}, function(fileEntry) {
         if (!fileEntry) {
           return;
@@ -51,20 +63,32 @@ controllers.controller('OpenFileCtrl', ['$scope', 'passwordStore',
         var reader = new FileReader();
 
         reader.onloadend = function() {
-          passwordStore.decrypt(this.result, $scope.password);
+          try {
+            passwordStore.decrypt(this.result, $scope.password);
+          } catch(e) {
+            return $scope.showError('Password does not match for file ' + $scope.filename + ' or file ' + $scope.filename + ' is no valid KeePass file');
+          }
+
           window.location.hash = '/passwordstore';
         };
 
         reader.readAsArrayBuffer(file);
       }, function() {
-        console.log('error');
-        // TODO: Error handling
-        //return showError('Could not load KeePass file from ' + $scope.url);
+        return $scope.showError('Could not load KeePass file ' + $scope.filename);
       });
+    };
+
+    $scope.showError = function(errorMessage) {
+      $scope.errorMessage = errorMessage;
+      $scope.$apply();
     };
   }]);
 
 controllers.controller('ListCtrl', ['$scope', 'passwordStore',
   function ($scope, passwordStore) {
     $scope.entries = passwordStore.getEntries();
+
+    $scope.toggleShowPassword = function(entry) {
+      entry.showPassword = !entry.showPassword;
+    };
   }]);

@@ -32,8 +32,6 @@ app.config(['$routeProvider',
   }]);
 
 app.factory('passwordStore', function() {
-  console.log('factory passwordStore called');
-
   var entries = [];
 
   return {

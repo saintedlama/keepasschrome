@@ -1,19 +1,17 @@
-<div ng-include="'views/navbar.html'"></div>
+<div ng-include="'views/partials/navbar.html'"></div>
 
 <div class="row">
     <div class="col-lg-12">
         <form name="openkeepass">
             <div class="form-group">
-                <label for="url">Url</label>
-                <input id="url" name="url" type="text" class="form-control" required ng-model="url">
+                <input id="url" placeholder="Enter URL starting with http:// or https://"  name="url" type="text" class="form-control" required ng-model="url">
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
-                <input id="password" type="password" class="form-control" required ng-model="password" required />
+                <input id="password" placeholder="Enter Password"  type="password" class="form-control" required ng-model="password" required />
             </div>
 
-            <button class="btn btn-primary btn-lg btn-block" ng-disabled="openkeepass.$invalid" ng-click="openPasswordStore()">
+            <button class="btn btn-primary btn-block" ng-disabled="openkeepass.$invalid" ng-click="openPasswordStore()">
                 <span class="fa fa-unlock"></span>
                 Open
             </button>
@@ -21,8 +19,8 @@
     </div>
 
     <div class="col-lg-12">
-        <div style="margin-top: 15px;" class="alert alert-danger" ng-show="openErrorMessage">
-            {{openErrorMessage}}
+        <div style="margin-top: 15px;" class="alert alert-danger" ng-show="errorMessage">
+            {{errorMessage}}
         </div>
     </div>
 </div>

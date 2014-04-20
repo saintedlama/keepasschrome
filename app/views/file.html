@@ -1,12 +1,10 @@
-<div ng-include="'views/navbar.html'"></div>
+<div ng-include="'views/partials/navbar.html'"></div>
 
 <div class="row">
     <div class="col-lg-12">
         <form name="openkeepass">
             <div class="input-group form-group">
-                <label for="filename">File</label>
-
-                <input id="filename" name="filename" type="text" class="form-control" required ng-model="filename">
+                <input id="filename" placeholder="Select File" name="filename" type="text" class="form-control" required disabled ng-model="filename">
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="button" ng-click="chooseFile()">
                         <span class="fa fa-file-o"></span>
@@ -15,11 +13,10 @@
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
-                <input id="password" type="password" class="form-control" required ng-model="password" required />
+                <input id="password" placeholder="Enter Password" type="password" class="form-control" required ng-model="password" required />
             </div>
 
-            <button class="btn btn-primary btn-lg btn-block" ng-disabled="openkeepass.$invalid" ng-click="openPasswordStore()">
+            <button class="btn btn-primary btn-block" ng-disabled="openkeepass.$invalid" ng-click="openPasswordStore()">
                 <span class="fa fa-unlock"></span>
                 Open
             </button>
@@ -27,8 +24,8 @@
     </div>
 
     <div class="col-lg-12">
-        <div style="margin-top: 15px;" class="alert alert-danger" ng-show="openErrorMessage">
-            {{openErrorMessage}}
+        <div style="margin-top: 15px;" class="alert alert-danger" ng-show="errorMessage">
+            {{errorMessage}}
         </div>
     </div>
 </div>
