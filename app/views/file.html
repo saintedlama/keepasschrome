@@ -1,10 +1,14 @@
 <div ng-include="'views/partials/navbar.html'"></div>
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-10">
         <form name="openkeepass">
+            <div class="form-group text-center">
+                <span class="help-block">Provide a password and/or a key file to decrypt the given KeePass password database.</span>
+            </div>
+
             <div class="input-group form-group">
-                <input id="filename" placeholder="Select File" name="filename" type="text" class="form-control" required disabled ng-model="filename">
+                <input id="filename" placeholder="Select File" name="filename" type="text" class="form-control" required ng-model="filename" disabled>
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="button" ng-click="chooseFile()">
                         <span class="fa fa-file-o"></span>
@@ -13,7 +17,16 @@
             </div>
 
             <div class="form-group">
-                <input id="password" placeholder="Enter Password" type="password" class="form-control" required ng-model="password" required />
+                <input id="password" placeholder="Enter Password" type="password" class="form-control" ng-required="isRequired()" ng-model="password" />
+            </div>
+
+            <div class="input-group form-group">
+                <input id="keyfilename" placeholder="Select Optional Key File" name="keyfilename" type="text" class="form-control" ng-required="isRequired()" ng-model="keyfilename" disabled>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" ng-click="chooseKeyfile()">
+                        <span class="fa fa-file-o"></span>
+                    </button>
+                </span>
             </div>
 
             <button class="btn btn-primary btn-block" ng-disabled="openkeepass.$invalid" ng-click="openPasswordStore()">
@@ -22,9 +35,10 @@
             </button>
         </form>
     </div>
-
+</div>
+<div class="row" ng-show="errorMessage">
     <div class="col-lg-12">
-        <div style="margin-top: 15px;" class="alert alert-danger" ng-show="errorMessage">
+        <div style="margin-top: 15px;" class="alert alert-danger">
             {{errorMessage}}
         </div>
     </div>

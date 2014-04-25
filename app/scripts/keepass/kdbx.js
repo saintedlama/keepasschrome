@@ -65,6 +65,28 @@ function readPassword(password) {
     return CryptoJS.SHA256(password);
 }
 
+function readKeyfile(keyfile) {
+  var keyFileData = keyfile.getString();
+  var doc = (new DOMParser()).parseFromString(keyFileData, "text/xml");
+
+  var results = evaluateXPath(doc, '//KeyFile/Key/Data');
+
+  if (results.length === 1) {
+    return readXmlKeyfile(results[0].innerHTML);
+  } else {
+    return readPlainKeyfile(keyFileData);
+  }
+}
+
+function readXmlKeyfile(keyBase64Encoded) {
+  return CryptoJS.enc.Base64.parse(keyBase64Encoded);
+}
+
+function readPlainKeyfile(keyfilePlainData) {
+  var keyfilePlainParsed = CryptoJS.enc.Latin1.parse(keyfilePlainData);
+  return CryptoJS.SHA256(keyfilePlainParsed);
+}
+
 function decodeUtf8(value) {
     return decodeURIComponent(escape(value));
 }

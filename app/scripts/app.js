@@ -36,11 +36,19 @@ app.factory('passwordStore', function() {
 
   return {
     // TODO: wrap jDataView, readPassword, readKeePassFile in angular services
-    decrypt : function(inputBinary, password) {
+    decrypt : function(inputBinary, password, keyfile) {
         var data = new jDataView(inputBinary, 0, inputBinary.length, true);
 
         var passes = [];
+
+      if (password) {
         passes.push(readPassword(password));
+      }
+
+      if (keyfile) {
+        var keyfileData = new jDataView(keyfile, 0, keyfile.length, true);
+        passes.push(readKeyfile(keyfileData));
+      }
 
         entries = readKeePassFile(data, passes);
 
