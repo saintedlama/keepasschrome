@@ -9,8 +9,10 @@ than using KeePassHTTP. KeePass Chrome is especially useful with Chromebooks.
 Downloading and Installing
 -----------
 KeePass Chrome can be downloaded and installed on the 
-[Chrome Web Store](https://chrome.google.com/webstore/detail/keepass-chrome/dblfjmedcfpfopkkkknpgkokmlnfildj).  
-To install the bleeding-edge master version:
+[Chrome Web Store](https://chrome.google.com/webstore/detail/keepass-chrome/dblfjmedcfpfopkkkknpgkokmlnfildj).
+
+To install the bleeding-edge master version, enter the following command on your terminal:
+
     $ git clone https://github.com/saintedlama/keepasschrome.git  
 Afterwards, go to the three-line menu, click on **More Tools** > **Extensions**,
 enable **Developer Mode** 
