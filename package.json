@@ -1,15 +1,16 @@
 {
   "name": "keepasschrome",
   "version": "0.1.0",
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
-    "gulp": "~3.6.0",
-    "gulp-load-tasks": "~0.1.1",
-    "gulp-clean": "~0.2.4",
-    "gulp-zip": "~0.3.3",
-    "tiny-lr": "0.0.5",
-    "gulp-less": "~1.2.3",
-    "gulp-concat": "~2.2.0"
+    "gulp": "~3.9.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-clean": "~0.3.1",
+    "gulp-zip": "~3.0.2",
+    "tiny-lr": "0.2.1",
+    "gulp-less": "~3.0.5",
+    "gulp-concat": "~2.6.0"
   },
   "engines": {
     "node": ">=0.8.0"

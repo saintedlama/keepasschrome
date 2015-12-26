@@ -1,6 +1,6 @@
 "use strict";
 var gulp = require('gulp');
-var p = require('gulp-load-tasks')();
+var p = require('gulp-load-plugins')();
 
 var tinylr = require('tiny-lr');
 
